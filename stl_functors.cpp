@@ -32,7 +32,7 @@ class my_random_number_generator
 {
 public:
 	my_random_number_generator(int a, int b) : min(a), max(b) {}
-	int operator() () { return rand() % max + min; }
+	int operator() () { return rand() % (max-min+1) + min; }
 private:
 	int min;
 	int max;
@@ -49,9 +49,55 @@ int func2(void)
 	return 0;
 }
 
+// Create a new vector to hold 100 strings. Use another Generator that you write to fill it with 100 random alphabetic strings of random lengths between 5 and 15 characters inclusive.
+// Sort the vector you've made using the version of sort that applies operator< to the vector. Display this sorted vector in a similar fashion to the way you displayed exercise 1's result.
+// Then, re-sort the vector by length of string (ascending). You'll want to use a comparator that conforms to the Strict Weak Ordering model. Output your re-sorted vector to stdout.
+
+class my_random_string_generator
+{
+public:
+    my_random_string_generator(int a, int b) : minlength(a), maxlength(b) {}
+    string operator() ()
+    {
+        int randlength = rand() % (maxlength-minlength+1) + minlength;
+        string str;
+        for (int i = 0; i < randlength; i++)
+            str += rand() % ('z' - 'a' + 1) + 'a';
+        return str;
+    }
+private:
+    int minlength;
+    int maxlength;
+};
+
+class my_less
+{
+public:
+    bool operator() (string s1, string s2) { return s1.length() < s2.length(); }
+};
+
+
+int func3(void)
+{
+    vector<string> strlist(10);
+    my_random_string_generator mrsg(5,15);
+    my_less ml;
+    generate(strlist.begin(), strlist.end(), mrsg);
+    cout << "AFTER GENERATION:\n";
+    copy(strlist.begin(), strlist.end(), ostream_iterator<string>(cout, "\n"));
+    sort(strlist.begin(), strlist.end());
+    cout << "AFTER FIRST SORT:\n";
+    copy(strlist.begin(), strlist.end(), ostream_iterator<string>(cout, "\n"));
+    sort(strlist.begin(), strlist.end(), ml);
+    cout << "AFTER SECOND SORT:\n";
+    copy(strlist.begin(), strlist.end(), ostream_iterator<string>(cout, "\n"));
+    return 0;
+}
+
 int main(void)
 {
-	func1();
-	func2();
+	//func1();
+	//func2();
+    func3();
 	return 0;
 }

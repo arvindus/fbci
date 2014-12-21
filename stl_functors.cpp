@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <iterator>
+#include <functional>
 
 using namespace std;
 class my_functor
@@ -94,10 +95,99 @@ int func3(void)
     return 0;
 }
 
+// Generate a vector of 100 random integers between 1 and 100, as before,
+// then write some code to count how many of these numbers are odd and how many are even, in a single pass over the integers.
+// Do this by creating a simple function object that implements the unary_function model, and that maintains some internal state.
+// You should then be able to apply it with the for_each algorithm and then extract the counts at the end.
+
+class count_odd_even
+{
+public:
+    count_odd_even() : count_odd(0), count_even(0) {}
+    void operator() (int a)
+    {
+        count_odd = count_odd + (a % 2);
+        count_even = count_even + ((a+1)%2);
+    }
+    int get_count_odd() { return count_odd; }
+    int get_count_even() { return count_even; }
+private:
+    int count_odd;
+    int count_even;
+};
+
+int func4(void)
+{
+    vector<int> v(10);
+    my_random_number_generator mrng(1,10);
+    count_odd_even coe;
+    generate(v.begin(), v.end(), mrng);
+    cout << "AFTER GENERATION\n";
+    copy(v.begin(), v.end(), ostream_iterator<int>(cout, "\n"));
+    coe = for_each(v.begin(), v.end(), coe);
+    cout << " count_odd = " << coe.get_count_odd() << "\ncount_even = " << coe.get_count_even() << "\n";
+    return 0;
+}
+
+// what you think the author of this code intended it to do,
+// why this code is broken (what does it do?),
+// how you've fixed it.
+// Of course, actually fix the code, compile, and verify that it works the way it was probably meant to work.
+int func5(void)
+{
+    vector<int> v;
+    v.push_back(1);
+    v.push_back(4);
+    v.push_back(2);
+    v.push_back(8);
+    v.push_back(5);
+    v.push_back(7);
+    
+    copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
+    cout << endl;
+    
+    copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
+    cout << endl;
+    return 0;
+}
+
+// Now you can try your hand at writing a simple STL algorithm. You will create your own version of the reverse() algorithm in a file exercise5.cc. This algorithm must be implemented as a function template (which we will discuss in a future class), declared like this:
+
+template <typename BidirectionalIterator>
+void my_reverse(BidirectionalIterator first, BidirectionalIterator last)
+{
+    BidirectionalIterator it1 = first;
+    BidirectionalIterator it2 = last;
+    while (it1 < it2)
+    {
+        it2--;
+        swap(*it1,*it2);
+        it1++;
+    }
+}
+
+int func6(int size)
+{
+    vector<int> v(size);
+    my_random_number_generator mrng(1,100);
+    generate(v.begin(), v.end(), mrng);
+    cout << "AFTER GENERATE\n";
+    copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
+    cout << "\n";
+    my_reverse(v.begin(), v.end());
+    cout << "AFTER REVERSE\n";
+    copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
+    cout << "\n";
+    return 0;
+}
+
 int main(void)
 {
 	//func1();
 	//func2();
-    func3();
+    //func3();
+    //func4();
+    //func5();
+    func6(7);
 	return 0;
 }

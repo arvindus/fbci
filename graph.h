@@ -14,8 +14,12 @@
 #include <iostream> 
 #include <unordered_map>
 #include "queue.h"
+#include "stack.h"
 
 using namespace std;
+
+typedef enum {undiscovered, discovered, processed} STATE;
+typedef enum {unknown, BLACK, WHITE} COLOR;
 
 template <typename T>
 class node
@@ -51,9 +55,25 @@ class graph
 {
 private:
     vector<node <T> *> nodelist;
+    bool directed;
+    unordered_map<node<T> *, node<T> *> node2parent;
+    unordered_map<node<T> *, STATE> node2state;
+    unordered_map<node<T> *, COLOR> node2color;
+    bool is_bipartate;
 public:
-    graph(int n) { nodelist.resize(n); }
-    graph() {}
+    graph(int n, bool t) : directed(t)
+    {
+        nodelist.resize(n);
+        clearAllColors();
+        clearAllStates();
+        clearAllParents();
+    }
+    graph(bool t) : directed(t)
+    {
+        clearAllColors();
+        clearAllStates();
+        clearAllParents();
+    }
     ~graph()
     {
         for (auto it = nodelist.begin(); it != nodelist.end(); ++it)
@@ -61,6 +81,22 @@ public:
             delete *it;
         }
     }
+    void clearAllColors()
+    {
+        for (auto elem : nodelist) { node2color[elem] = unknown; }
+    }
+    
+    void clearAllStates()
+    {
+        for (auto elem : nodelist) { node2state[elem] = undiscovered; }
+    }
+    
+    void clearAllParents()
+    {
+        for (auto elem : nodelist) { node2parent[elem] = NULL; }
+    }
+    
+    bool isDirected() { return directed; }
     node<T> *add_new_node(T t) { node<T> *n1 = new node<T>(t); nodelist.push_back(n1); return n1; }
     void add_new_node(node<T> *t_n) { nodelist.push_back(t_n); }
     
@@ -81,54 +117,130 @@ public:
         for (auto it = nodelist.begin(); it != nodelist.end(); ++it)
         {
             (*it)->print();
+            if (node2parent[*it])
+                cout << "parent = " << node2parent[*it]->get_data() << "\n";
+            cout << "state = " << node2state[*it] << "\n";
+            cout << "color = " << node2color[*it] << "\n";
         }
     }
     void preprocessnode(node<T> *n1)
     {
-        cout << "Node being preprocessed\n";
-        n1->print();
-        cout << "End preprocessing node\n";
+        cout << "Node being preprocessed: " << n1->get_data() << "\n";
+        //n1->print();
+        //cout << "End preprocessing node\n";
     }
     void processedge(node<T> *n1, node<T> *n2, int w)
     {
-        cout << "Edge being processed\n";
-        cout << "SRC\n";
-        n1->print();
-        cout << "DEST\n";
-        n2->print();
-        cout << "weight = " << w << "\n";
-        cout << "End processing edge\n";
+        //cout << "Edge being processed\n";
+        //cout << "SRC\n";
+        //n1->print();
+        //cout << "DEST\n";
+        //n2->print();
+        //cout << "weight = " << w << "\n";
+        cout << "Processing " << n1->get_data() << "->" << n2->get_data() << "\n";
+        if ((node2color[n2] != unknown) && (node2color[n1] == node2color[n2]))
+        {
+            is_bipartate = false;
+        }
+        else
+        {
+            if (node2color[n1] == WHITE)
+                node2color[n2] = BLACK;
+            else
+                node2color[n2] = WHITE;
+        }
+        // Finding if this is a back edge
+        if (node2parent[n2] != n1)
+        {
+            cout << "Back edge between " << n1->get_data() << " and " << n2->get_data() << "\n";
+            cout << "Path is: ";
+            findPath(n2,n1);
+        }
+        //cout << "End processing edge\n";
     }
     void postprocessnode(node<T> *n1)
     {
-        cout << "Node being postprocessed\n";
-        n1->print();
-        cout << "End postprocessing node\n";
+        cout << "Node being postprocessed: " << n1->get_data() << "\n";
+        //n1->print();
+        //cout << "End postprocessing node\n";
     }
     void bfs(node<T> *);
+    void dfs(node<T> *);
+    bool isBipartate();
+    void findPath(node<T> *src, node<T> *dest);
 };
 
-typedef enum {undiscovered, discovered, processed} STATE;
+template <typename T>
+void graph<T>::findPath(node<T> *src, node<T> *dest)
+{
+    if (node2parent[dest] == src)
+    {
+        cout << src->get_data();
+    }
+    else
+    {
+        findPath(src, node2parent[dest]);
+    }
+    cout << "->" << dest->get_data();
+}
+
+template <typename T>
+bool graph<T>::isBipartate()
+{
+    is_bipartate = true;
+    for (auto elem : nodelist)
+    {
+        if (node2color[elem] == unknown)
+        {
+            node2color[elem] = WHITE;
+            bfs(elem);
+        }
+    }
+    return is_bipartate;
+}
 
 template <typename T>
 void graph<T>::bfs(node<T> *n1)
 {
-    unordered_map<node<T> *, node<T> *> node2parent;
-    unordered_map<node<T> *, STATE> node2state;
-    
     queue<node<T> *> tempnodelist;
-    for (auto it = nodelist.begin(); it != nodelist.end(); ++it)
-    {
-        node2parent[*it] = NULL;
-        node2state[*it] = undiscovered;
-    }
     node2state[n1] = discovered;
     tempnodelist.enqueue(n1);
     
     while (!tempnodelist.isempty())
     {
         node<T> *t_n = tempnodelist.dequeue();
-        //preprocessnode(t_n);
+        preprocessnode(t_n);
+        auto t_adjlist = t_n->get_adjlist();
+        for (auto it = t_adjlist.begin(); it != t_adjlist.end(); ++it)
+        {
+            if ((node2state[(*it).first] != processed) && (!isDirected()))
+            {
+                processedge(t_n,(*it).first,(*it).second);
+            }
+            if (node2state[(*it).first] == undiscovered)
+            {
+                node2parent[(*it).first] = t_n;
+                node2state[(*it).first] = discovered;
+                tempnodelist.enqueue((*it).first);
+            }
+        }
+        node2state[t_n] = processed;
+        postprocessnode(t_n);
+    }
+    return;
+}
+
+template <typename T>
+void graph<T>::dfs(node<T> *n1)
+{
+    stack<node<T> *> tempnodelist;
+    node2state[n1] = discovered;
+    tempnodelist.enqueue(n1);
+    
+    while (!tempnodelist.isempty())
+    {
+        node<T> *t_n = tempnodelist.dequeue();
+        preprocessnode(t_n);
         auto t_adjlist = t_n->get_adjlist();
         for (auto it = t_adjlist.begin(); it != t_adjlist.end(); ++it)
         {
@@ -136,9 +248,9 @@ void graph<T>::bfs(node<T> *n1)
             {
                 node2parent[(*it).first] = t_n;
                 node2state[(*it).first] = discovered;
-                //processedge(t_n,(*it).first,(*it).second);
                 tempnodelist.enqueue((*it).first);
             }
+            processedge(t_n,(*it).first,(*it).second);
         }
         node2state[t_n] = processed;
         postprocessnode(t_n);

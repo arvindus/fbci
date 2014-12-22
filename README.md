@@ -9,4 +9,5 @@ graph cloning
 
 template workout
 
+stl and functors
 

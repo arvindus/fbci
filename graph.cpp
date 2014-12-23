@@ -10,44 +10,20 @@
 
 int main()
 {
-    graph<int> g1(false);
-    /*
-    node<int> *n1 = g1.add_new_node(1);
-    node<int> *n2 = g1.add_new_node(2);
-    node<int> *n3 = g1.add_new_node(3);
-    node<int> *n4 = g1.add_new_node(4);
-    node<int> *n5 = g1.add_new_node(5);
+    graph<int> *g1 = graph<int>::createGraph4(false);
     
-    g1.add_new_edge(n1,n2,1);
-    g1.add_new_edge(n1,n3,1);
-    g1.add_new_edge(n1,n5,1);
-    g1.add_new_edge(n2,n3,1);
-    g1.add_new_edge(n2,n4,1);
-    g1.add_new_edge(n3,n4,1);
-    */
-    
-    node<int> *n1 = g1.add_new_node(1);
-    node<int> *n2 = g1.add_new_node(2);
-    node<int> *n3 = g1.add_new_node(3);
-    node<int> *n4 = g1.add_new_node(4);
-    node<int> *n5 = g1.add_new_node(5);
-    node<int> *n6 = g1.add_new_node(6);
-    
-    g1.add_new_edge(n1,n2,1);
-    g1.add_new_edge(n1,n3,1);
-    g1.add_new_edge(n2,n4,1);
-    g1.add_new_edge(n3,n5,1);
-    g1.add_new_edge(n3,n6,1);
-    g1.add_new_edge(n6,n1,1);
-    
-    //g1.print();
-    //g1.bfs(n1);
-    g1.dfs(n1);
-    //g1.clearAllStates();
-    //g1.clearAllParents();
-    //g1.clearAllColors();
-    g1.findPath(n1,n6);
+    //if (g1->getNode(0) != NULL)
+	//	g1->dfs(g1->getNode(0));
+    //if ((g1->getNode(0) != NULL) && (g1->getNode(9) != NULL))
+	//	g1->findPath(g1->getNode(0),g1->getNode(9));
     cout << "\n";
-    g1.print();
+	stack<node <int> *> *st = new stack<node <int> *>();
+	g1->topologicalSort(st);
+	
+	int cost = g1->findMST();
+	cout << "min cost of mst is " << cost << "\n";
+	g1->printMST();
+	delete g1;
+	
     return 0;
 }

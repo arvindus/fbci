@@ -27,7 +27,7 @@ public:
         nodes.pop_back();
         return node;
     }
-    bool isempty() { return nodes.empty(); }
+    bool isEmpty() { return nodes.empty(); }
     int num_nodes() { return nodes.size(); }
     void print()
     {

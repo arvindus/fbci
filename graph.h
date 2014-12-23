@@ -13,7 +13,7 @@
 #include <iterator>
 #include <iostream> 
 #include <unordered_map>
-#include<set>
+#include <set>
 #include "queue.h"
 #include "stack.h"
 
@@ -35,6 +35,7 @@ public:
     int num_edges() { return adjlist.size(); }
     vector<pair<node <T> *, int> > &get_adjlist() { return adjlist; }
     void print();
+	node<T> *cloneNode();
 };
 
 template <typename T>
@@ -49,6 +50,7 @@ private:
 	unordered_map<node<T> *, int> dfsStartTimes;
 	unordered_map<node<T> *, int> dfsEndTimes;
 	vector<pair <node<int> *, node<int> *>> mst_edges;
+	unordered_map<node<T> *, int> node2shortest;
     bool is_bipartate;
 	int dfsTime;
 	bool hasCycle;
@@ -59,6 +61,8 @@ public:
 	static graph<T> *createGraph2(bool isdirected);
 	static graph<T> *createGraph3(bool isdirected);
 	static graph<T> *createGraph4(bool isdirected);
+	static graph<T> *createGraph5(bool isdirected);
+	graph<T> *cloneGraph(void); 
     ~graph();
 	node<T> *getNode(int index) 
 	{ 
@@ -87,6 +91,9 @@ public:
 	bool topologicalSort(stack<node <T> *> *st);
 	int findMST();
 	void printMST();
+	void findDAGShortestPaths(node<T> *start);
+	void djikstra(node<T> *start);
+	void bellmanford(node<T> *start);
 };
 
 #endif /* defined(____graph__) */

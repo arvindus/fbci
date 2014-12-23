@@ -37,7 +37,13 @@ public:
         }
         std::cout << "\n";
     }
+	stack<T> *cloneStack()
+	{
+		stack<T> *st1 = new stack<T>();
+		st1->nodes.resize(num_nodes());
+		copy(nodes.begin(),nodes.end(),st1->nodes.begin());
+		return st1;
+	}
 };
-
 
 #endif /* defined(____stack__) */

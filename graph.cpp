@@ -16,8 +16,7 @@ int main()
 	//	g1->dfs(g1->getNode(0));
     //if ((g1->getNode(0) != NULL) && (g1->getNode(9) != NULL))
 	//	g1->findPath(g1->getNode(0),g1->getNode(9));
-    //cout << "\n";
-	//stack<node <int> *> *st = new stack<node <int> *>();
+    //stack<node <int> *> *st = new stack<node <int> *>();
 	//g1->topologicalSort(st);
 	
 	//int cost = g1->findMST();

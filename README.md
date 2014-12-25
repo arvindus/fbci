@@ -88,5 +88,6 @@ strings:
 5. regular expressions
 6. data compression
 
-
+Algorithms: Large scale processing 
+Coding concepts: Design Pattern, SOLID Principles
 

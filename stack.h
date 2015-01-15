@@ -12,6 +12,7 @@
 #include <vector>
 #include <iostream>
 
+#define MINVAL 1000000
 template <typename T>
 class stack
 {

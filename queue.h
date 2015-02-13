@@ -27,7 +27,7 @@ public:
         nodes.pop_front();
         return node;
     }
-    bool isempty() { return nodes.empty(); }
+    bool isEmpty() { return nodes.empty(); }
     int num_nodes() { return nodes.size(); }
     void print()
     {
@@ -36,6 +36,13 @@ public:
             std::cout << *(nodes[i]) << " ";
         }
         std::cout << "\n";
+    }
+    queue<T> *cloneQueue()
+    {
+        queue<T> *q1 = new queue<T>();
+        q1->nodes.resize(num_nodes());
+        copy(nodes.begin(),nodes.end(),q1->nodes.begin());
+        return q1;
     }
 };
 

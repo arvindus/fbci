@@ -1,0 +1,56 @@
+Data already present
+Data already present
+Inorder traversal of tree: 
+4 8 NULL NULL
+8 10 4 NULL
+10 NULL 8 50
+13 24 NULL NULL
+24 31 13 28
+28 24 NULL 30
+30 28 NULL NULL
+31 50 24 45
+41 45 NULL 43
+43 41 NULL NULL
+45 31 41 NULL
+50 10 31 74
+59 74 NULL 73
+66 73 NULL NULL
+73 59 66 NULL
+74 50 59 79
+79 74 NULL 93
+88 93 NULL NULL
+93 79 88 NULL
+******************
+Data not found in tree
+Data found
+deleting 50
+Inorder traversal of tree: 
+4 8 NULL NULL
+8 10 4 NULL
+10 NULL 8 45
+13 24 NULL NULL
+24 31 13 28
+28 24 NULL 30
+30 28 NULL NULL
+31 45 24 43
+41 43 NULL NULL
+43 31 41 NULL
+45 10 31 74
+59 74 NULL 73
+66 73 NULL NULL
+73 59 66 NULL
+74 45 59 79
+79 74 NULL 93
+88 93 NULL NULL
+93 79 88 NULL
+******************
+Find range between 1 and 6:
+Range of nodes between 3 and 9
+4 8 NULL NULL
+8 10 4 NULL
+Height is 6
+min is 4
+max is 93
+curr = 45
+succ = 59
+pred = 43

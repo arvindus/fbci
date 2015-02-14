@@ -26,7 +26,8 @@ int main(void)
     }
     mystack.print();
     */
-    threeStacks<int *> mythreestack;
+    /*
+     threeStacks<int *> mythreestack;
     
     int b[10] = {1,2,3,4,5,6,7,8,9,10};
     int c[5] = {11,12,13,14,15};
@@ -53,5 +54,21 @@ int main(void)
             x = mythreestack.dequeue(2);
     }
     mythreestack.print();
+     */
+    
+    int tmp;
+    stackMin<int *> mystack(&tmp);
+    int a[10] = {7,3,6,9,4,1,9,0,1,7};
+    
+    for (int i = 0; i < 10; i++)
+    {
+        mystack.enqueue(&a[i]);
+    }
+    mystack.print();
+    for (int i = 0; i < 5; i++)
+    {
+        int *x = mystack.dequeue();
+    }
+    mystack.print();
     return 0;
 }

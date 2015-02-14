@@ -228,6 +228,36 @@ bool isAPalindrome(string str, int start, int end)
         return false;
 }
 
+void reverse_string(char *arr, int a, int b)
+{
+    while (a<b)
+    {
+        char temp = arr[a];
+        arr[a++] = arr[b];
+        arr[b--] = temp;
+    }
+}
+
+// Algorithm
+// 1. reverse entire array
+// 2. reverse each word
+void reverse_words(char *arr, int length)
+{
+    int a;
+    reverse_string(arr,0,length-1);
+    int c = 0;
+    a = c;
+    while (c < length)
+    {
+        if (arr[c] ==  ' ')
+        {
+            reverse_string(arr,a,c-1);
+            a = c+1;
+        }
+        c++;
+    }
+}
+
 int main()
 {
     /*stringlist mylist;
@@ -237,7 +267,7 @@ int main()
     mylist.insert("bbbbbbbbbbbb");
     mylist.print();
     mylist.mysort();
-    mylist.print();*/
+    mylist.print();
     string s2("ababx");
     string s1("aabacababacc");
     
@@ -261,5 +291,10 @@ int main()
     string s8("racEcAr!!!!");
     
     cout << isAPalindrome(s8,0,s8.size()-1) << "\n";
+    */
+    char s9[] = "I wish you a merry christmas";
+    cout << s9 << "\n";
+    reverse_words(s9,28);
+    cout << s9 << "\n";
     return 0;
 }

@@ -85,6 +85,9 @@ public:
     void createSampleBinaryTree();
     int getMinDepth(node<T> *n1);
     int getMinDepth_2(node<T> *n1);
+    
+    node<T> *findNode(T val, node<T> *n1);
+    node<T> *getFirstCommonAncestor(node<T> *n1, node<T> *n2);
 };
 
 #endif /* defined(____tree__) */

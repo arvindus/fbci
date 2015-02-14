@@ -72,5 +72,8 @@ int main(void)
     cout << "Min depth is " << bt->getMinDepth(bt->getRoot()) << "\n";
     
     cout << "Min depth is " << bt->getMinDepth_2(bt->getRoot()) << "\n";
+    
+    cout << "First common ancestor of n7 and n11: " << 
+    
     return 0;
 }

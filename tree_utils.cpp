@@ -260,8 +260,8 @@ void binarytree<T>::createSampleBinaryTree(void)
     n2->setRight(n5);
     
     n3->setParent(n1);
-    //n3->setLeft(n6);
-    //n3->setRight(n12);
+    n3->setLeft(n6);
+    n3->setRight(n12);
     
     n4->setParent(n2);
     n4->setLeft(n9);
@@ -270,13 +270,13 @@ void binarytree<T>::createSampleBinaryTree(void)
     n5->setParent(n2);
     n5->setLeft(n11);
     
-    //n6->setParent(n3);
-    //n6->setLeft(n7);
-    //n6->setRight(n8);
+    n6->setParent(n3);
+    n6->setLeft(n7);
+    n6->setRight(n8);
     
-    //n7->setParent(n6);
+    n7->setParent(n6);
     
-    //n8->setParent(n6);
+    n8->setParent(n6);
     
     n9->setParent(n4);
     
@@ -284,7 +284,7 @@ void binarytree<T>::createSampleBinaryTree(void)
     
     n11->setParent(n5);
     
-    //n12->setParent(n3);
+    n12->setParent(n3);
     
     
 }
@@ -352,6 +352,28 @@ int binarytree<T>::getMinDepth_2(node<T> *n1)
         }
     }
     return -1;
+}
+
+template <typename T>
+node<T> *binarytree<T>::findNode(T val, node<T> *n1)
+{
+    if (n1 == NULL)
+        return NULL;
+    if (n1->data == val)
+    {
+        return n1;
+    }
+    node<T> *temp = findNode(val,n1->getLeft());
+    if (temp != NULL)
+        return temp;
+    else
+        return findNode(val,n1->getRight());
+}
+
+template <typename T>
+node<T> *binarytree<T>::getFirstCommonAncestor(node<T> *n1, node<T> *n2)
+{
+    return n1;
 }
 
 template class binarytree<int>;
